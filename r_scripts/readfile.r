@@ -18,16 +18,16 @@ getDepth <- function(list){
 # ------------------------------------------------
 # read data
 data.process.old <- read.csv(paste("sq_", project, "_", v.pre, "_dataset.txt.csv", sep=""), header=T); # metrics data
-data.buglist.old <- read.csv(paste("sq_", project, "_", v.pre, "_buglist_POST.txt", sep=""), header=F); # bugid + modified files
-data.buglist.old.PRE <- read.csv(paste("sq_", project, "_" , v.pre, "_buglist_PRE.txt", sep=""), header=F); # bugid + modified files
+data.buglist.old <- read.csv(paste("sq_", project, "_", v.pre, "_buglist_POST.txt", sep=""), header=T); # bugid + modified files
+data.buglist.old.PRE <- read.csv(paste("sq_", project, "_" , v.pre, "_buglist_PRE.txt", sep=""), header=T); # bugid + modified files
 names(data.buglist.old)     <- c("BID","FILE","FxEf_CHURN","ReEf_TLOC")
 names(data.buglist.old.PRE) <- c("BID","FILE","FxEf_CHURN","ReEf_TLOC")
 data.list.old     <- cbind(data.buglist.old,     FxEf_TLOC= data.buglist.old$ReEf_TLOC)
 data.list.old.PRE <- cbind(data.buglist.old.PRE, FxEf_TLOC= data.buglist.old.PRE$ReEf_TLOC)
 
 data.process.new <- read.csv(paste("sq_", project, "_", v.post, "_dataset.txt.csv", sep=""), header=T); # metrics data
-data.buglist     <- read.csv(paste("sq_", project, "_", v.post, "_buglist_POST.txt", sep=""), header=F); # bugid + modified files
-data.buglist.PRE <- read.csv(paste("sq_", project, "_", v.post, "_buglist_PRE.txt", sep=""), header=F); # bugid + modified files
+data.buglist     <- read.csv(paste("sq_", project, "_", v.post, "_buglist_POST.txt", sep=""), header=T); # bugid + modified files
+data.buglist.PRE <- read.csv(paste("sq_", project, "_", v.post, "_buglist_PRE.txt", sep=""), header=T); # bugid + modified files
 names(data.buglist)     <- c("BID","FILE","FxEf_CHURN","ReEf_TLOC")
 names(data.buglist.PRE) <- c("BID","FILE","FxEf_CHURN.PRE","ReEf_TLOC")
 data.list     <- cbind(data.buglist,     FxEf_TLOC= data.buglist$ReEf_TLOC)
