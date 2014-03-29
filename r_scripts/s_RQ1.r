@@ -1,7 +1,5 @@
 # settings
 library(randomForest)
-try(setwd("/scratch1/kamei/str/data"))
-try(setwd("/Users/kamei/Research/sq_effort/data"))
 set.seed(1)
 
 # ------------------------------------------------
@@ -24,15 +22,16 @@ if(TYPE == "FxEf_CHURN"){
 }
 
 # File-Level
-res.opt <- doSimulateForFixingEffort(idx, TYPE, Review=REVIEW)
-res.post <- doSimulateForFixingEffort(test$POST, TYPE, Review=REVIEW)
-res.den <- doSimulateForFixingEffort(test$BUGDENSITY, TYPE, Review=REVIEW)
+res.opt <- doSimulateForFixingEffort(idx, TYPE, Review=REVIEW, Dynamic=DYNAMIC, BUG=test$AFTER, EFFORT=test$AllEf_CHURN)
+e <- rep(1, nrow(test))
+res.post <- doSimulateForFixingEffort(test$POST, TYPE, Review=REVIEW, Dynamic=DYNAMIC, BUG=test$AFTER, EFFORT=e)
+res.den <- doSimulateForFixingEffort(test$BUGDENSITY, TYPE, Review=REVIEW, Dynamic=DYNAMIC, BUG=test$AFTER, EFFORT=test$ReEf_TLOC)
 res.rnd <- doSimulateForFixingEffort(runif(length(idx)), TYPE, Review=REVIEW)
 
 # Bug-Level
 res.bug <- doSimulateAtBugLevel(TYPE)
 
-pdf.name <- paste("../graph/", project, "_plot_fixing_", TYPE , "-", v.pre, "-", v.post, "_", TYPE , "-Review-", REVIEW,  "_RQ1.pdf", sep="")
+pdf.name <- paste("../graph/", project, "_plot_fixing_", TYPE , "-", v.pre, "-", v.post, "_", TYPE , "-Review-", REVIEW, "-Dynamic-", DYNAMIC, "_RQ1.pdf", sep="")
 
 sink(file = paste("../graph/", project,"_result_rq1.txt", sep=""), append=T) #
 

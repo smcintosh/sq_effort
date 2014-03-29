@@ -1,8 +1,8 @@
 # ------------------------------------------------
-addReviewingEffort <- function(data.process){
+addReviewingEffort <- function(data.process, BUGTYPE="AFTER"){
   data.process <- cbind(data.process, ReEf_TLOC=data.process$TLOC)
-  data.process <- cbind(data.process, BUGDENSITY=(data.process$POST/data.process$ReEf_TLOC*1000))
-
+  data.process <- cbind(data.process, BUGDENSITY=(data.process[,BUGTYPE]/data.process$ReEf_TLOC*1000))
+  
   # add some filters [2014/03/03]
   idx <- (data.process$TLOC == 0)
   data.process[idx,"BUGDENSITY"] <- 0
@@ -11,7 +11,7 @@ addReviewingEffort <- function(data.process){
 }
 
 # ------------------------------------------------
-addFixingEffort <- function(data.process,data.list, BUGTYPE="POST"){
+addFixingEffort <- function(data.process,data.list, BUGTYPE="AFTER"){
   # TLOC
   bid.effort <- tapply(data.list$ReEf_TLOC, data.list$BID, sum)
   bid <- data.frame(BID=names(bid.effort), FxEf_TLOC=bid.effort)
@@ -83,7 +83,7 @@ doSimulateAtBugLevel <- function(TYPE="FxEf_TLOC"){
 # simulate for fixing effort based on indexes
 # arg: index keys to say the order to be fixed
 # note: we will use both of test and data.list
-doSimulateForFixingEffort <- function(values, TYPE="FxEf_TLOC", Decreasing=T, Dynamic=F, Review=F){
+doSimulateForFixingEffort <- function(values, TYPE="FxEf_TLOC", Decreasing=T, Dynamic=F, Review=F, BUG=NULL, EFFORT=NULL){
   original.values <- values
   idxs <- order(values, decreasing=Decreasing)
   
@@ -137,21 +137,8 @@ doSimulateForFixingEffort <- function(values, TYPE="FxEf_TLOC", Decreasing=T, Dy
             updated.file <- as.character(sub.filelist[,"FILE"])
             all.file <- as.character(filenames)
             updated.idx  <- is.element(all.file, intersect(all.file, updated.file))
-            
-            ### pattern 1
-            est.bug <- values[updated.idx] * MEDIAN.EFFORT / 1000
-            est.bug <- est.bug - 1
-            est.bug[(est.bug < 0)] <- 0        
-            
-            est.effort <- MEDIAN.EFFORT - sum(sub.filelist[,TYPE])
-            est.effort[(est.effort < 0)] <- 0.1 
-            
-            diff <- est.bug / est.effort * 1000
-            values[updated.idx] <- diff
-            
-            ### pattern 2
-            #diff <- 1 / sum(sub.filelist[,TYPE]) * 1000
-            #values[updated.idx] <- values[updated.idx] - diff
+
+            values[updated.idx] <- (BUG[updated.idx] - 1) / EFFORT[updated.idx] * 1000
             
             tmp.idxs   <- order(values, decreasing=Decreasing)
             deleted.idxs  <- is.element(tmp.idxs, intersect(idxs[1:i], tmp.idxs))

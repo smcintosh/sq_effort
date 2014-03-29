@@ -44,7 +44,7 @@ origin.new <- data.process.new
 
 # adding more information (fixing effort)
 data.process.new <- addFixingEffort(data.process.new,data.list)
-pre <- addFixingEffort(origin.new, data.list.PRE, BUGTYPE="PRE")
+pre <- addFixingEffort(origin.new, data.list.PRE, BUGTYPE="BEFORE")
 
 idx <- charmatch(c("FxEf_TLOC", "FxEf_CHURN", "BUG_FxEf_TLOC", "BUG_FxEf_CHURN"), names(pre))
 pre <- pre[,idx]
@@ -60,7 +60,7 @@ data.process.new$FILE <- as.character(data.process.new$FILE) # category -> chara
 
 # repeat same data preparation for old version
 data.process.old <- addFixingEffort(data.process.old,data.list.old)
-pre <- addFixingEffort(origin.old, data.list.old.PRE, BUGTYPE="PRE")
+pre <- addFixingEffort(origin.old, data.list.old.PRE, BUGTYPE="BEFORE")
 
 idx <- charmatch(c("FxEf_TLOC", "FxEf_CHURN", "BUG_FxEf_TLOC", "BUG_FxEf_CHURN"), names(pre))
 pre <- pre[,idx]

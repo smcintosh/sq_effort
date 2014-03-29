@@ -1,6 +1,5 @@
 # settings
 library(randomForest)
-try(setwd("/Users/kamei/Research/sq_effort/data"))
 set.seed(1)
 
 # ------------------------------------------------
